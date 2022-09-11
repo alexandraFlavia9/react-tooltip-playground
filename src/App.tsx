@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <Tooltip title="title" content="content" position="bottom">
-        <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+        <span>Edit <code>src/App.tsx</code> and save to reload.</span>
       </Tooltip>
       <header className="App-header">
         <a

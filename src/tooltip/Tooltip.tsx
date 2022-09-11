@@ -1,6 +1,5 @@
 import React, {FC, ReactNode, useRef, useState} from 'react';
 import { TooltipPlacement } from './Tooltip.types';
-import { TooltipWrapper } from './Tooltip.style';
 import TooltipBody from './TooltipBody';
 
 interface TooltipProps {
@@ -13,16 +12,23 @@ const Tooltip: FC<TooltipProps> = (props) => {
     const { title, content, position, children } = props;
     const [open, setIsOpen] = useState(false);
     const tooltipWrapperRef = useRef<HTMLDivElement>(null);
+    const DELAY = 300;
+    const toggleTooltipDelay = useRef<NodeJS.Timeout>();
 
     const openTooltip = () => {
-        setIsOpen(true)
+        clearTimeout(toggleTooltipDelay.current);
+        toggleTooltipDelay.current = setTimeout(() => {
+            setIsOpen(true);
+        }, DELAY)
+
     };
 
     const closeTooltip = () => {
+        clearTimeout(toggleTooltipDelay.current);
         setIsOpen(false)
     };
     return (
-        <TooltipWrapper ref={tooltipWrapperRef} onMouseEnter={openTooltip} onMouseLeave={closeTooltip}>
+        <span ref={tooltipWrapperRef} onMouseEnter={openTooltip} onMouseLeave={closeTooltip}>
             {children}
             {open && (
                 <TooltipBody
@@ -32,7 +38,7 @@ const Tooltip: FC<TooltipProps> = (props) => {
                     wrapperRef={tooltipWrapperRef}
                 />
             )}
-        </TooltipWrapper>
+        </span>
     );
 };
 export default Tooltip;
